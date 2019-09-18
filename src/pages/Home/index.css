@@ -1,0 +1,11 @@
+.tabBar {
+    position: fixed;
+    bottom: 0;
+    width:100%;
+}
+.index{ 
+    padding-bottom: 30px;
+}
+.tabBar .iconfont {
+font-size:20px
+}

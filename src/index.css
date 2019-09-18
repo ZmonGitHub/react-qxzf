@@ -1,9 +1,14 @@
-html,body {
+html,body,#root, .App {
     height:100%;
     font-family: 'Microsoft YaHei';
     color:#333;
     background-color:#fff;
 }
+body{
+    margin:0px;
+    padding:0px
+    }
 * {
     box-sizing:border-box;
+    touch-action: pan-y;
 }
