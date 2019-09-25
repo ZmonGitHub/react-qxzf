@@ -4,11 +4,14 @@ html,body,#root, .App {
     color:#333;
     background-color:#fff;
 }
-body{
+body,ul{
     margin:0px;
     padding:0px
     }
 * {
     box-sizing:border-box;
     touch-action: pan-y;
+}
+ul {
+    list-style: none;
 }

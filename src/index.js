@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-
+// 'react-virtualized样式，长列表
+import 'react-virtualized/styles.css'
 // 引入全局样式，覆盖插件UI的
 import 'antd-mobile/dist/antd-mobile.css'
 import './index.css'

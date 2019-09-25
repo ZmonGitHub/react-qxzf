@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 // import './index.css'
 import './index.scss'
+import {BASE_URL} from '../../utils/url'
 import Nav1 from '../../assets/images/nav-1.png'
 import Nav2 from '../../assets/images/nav-2.png'
 import Nav3 from '../../assets/images/nav-3.png'
@@ -39,15 +40,17 @@ export default class Index extends Component {
         myCity.get(async (result) => {
         //    console.log(result) 
         //    根据ip拿到了当前城市名字,根据名字发送ajax给后台拿到城市数据
-            const res = await axios.get('http://localhost:8080/area/info',{
+            await axios.get('http://localhost:8080/area/info',{
                 params:{
                     name:result.name
                 }
             })
             // console.log(res)
             // 事件是没有this
+            localStorage.getItem('hkzf_city')
+            // console.log()
             this.setState({
-                GPS:res.data.body.label
+                GPS:JSON.parse(localStorage.getItem('hkzf_city')).label
             })
             // console.log(this.setState())
         })
@@ -120,7 +123,7 @@ export default class Index extends Component {
                 <div className="imgwrap">
                     <img
                         className="img"
-                        src={`http://localhost:8080${item.imgSrc}`}
+                        src={`${BASE_URL}${item.imgSrc}`}
                         alt=""
                     />
                 </div>
