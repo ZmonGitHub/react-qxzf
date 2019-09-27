@@ -18,6 +18,7 @@ function FilterFooter({
       {/* 取消按钮 */}
       <span
         className={[styles.btn, styles.cancel].join(' ')}
+        // 这个按钮就是取消按钮，事件是从filter一层一层传过来的
         onClick={onCancel}
       >
         {cancelText}

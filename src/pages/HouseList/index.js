@@ -12,7 +12,9 @@ export default function HouseList() {
             <i className="iconfont icon-back"></i>
             <SearchHeader cityName={label}></SearchHeader>
             </Flex>
+            {/* 条件筛选栏 */}
             <Filter />
+            
         </div>
     )
 }

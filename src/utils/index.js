@@ -1,6 +1,7 @@
 import axios from 'axios'
+import {API}  from './api'
+import {BASE_URL} from './url'
 const BMap = window.BMap
-
 const getCurrentCity = () => {
 
     const curCity = JSON.parse(localStorage.getItem('hkzf_city'))
@@ -45,4 +46,4 @@ const getCurrentCity = () => {
 
 
 
-export {getCurrentCity}
+export {getCurrentCity,API,BASE_URL}
