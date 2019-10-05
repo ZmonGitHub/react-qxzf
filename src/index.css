@@ -15,3 +15,9 @@ body,ul{
 ul {
     list-style: none;
 }
+dd {
+    margin:0;
+}
+.overFixed {
+    overflow: hidden;
+  }

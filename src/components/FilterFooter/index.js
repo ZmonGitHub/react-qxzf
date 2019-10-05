@@ -6,8 +6,8 @@ import PropTypes from 'prop-types'
 import styles from './index.module.css'
 
 function FilterFooter({
-  cancelText = '取消',
-  okText = '确定',
+  cancelText ,
+  okText,
   onCancel,
   onOk,
   className,
@@ -31,7 +31,11 @@ function FilterFooter({
     </Flex>
   )
 }
-
+// 默认属性
+FilterFooter.defaultProps = {
+  cancelText: '取消',
+  okText: '确定'
+}
 // props校验
 FilterFooter.propTypes = {
   cancelText: PropTypes.string,

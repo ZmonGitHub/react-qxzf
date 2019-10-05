@@ -213,7 +213,7 @@ export default class Map extends Component {
       const { list } =this.state
       return list.map((item,index) => (
         
-        <div key={index} className={styles.house}>
+        <div onClick={ ()=> this.props.history.push(`/details/${item.houseCode}`) } key={index} className={styles.house}>
           <div className={styles.imgWrap}>
             <img
               className={styles.img}

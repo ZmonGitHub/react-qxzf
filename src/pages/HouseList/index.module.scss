@@ -3,3 +3,12 @@
     background-color: pink;
     height:45px;
 }
+.root {
+    height: 100%;
+  
+    :global {
+      .ReactVirtualized__List {
+        padding-left: 15px;
+      }
+    }
+  }
