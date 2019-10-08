@@ -1,6 +1,7 @@
 import axios from 'axios'
 import {API}  from './api'
 import {BASE_URL} from './url'
+import { getCity,setCity } from './city'
 const BMap = window.BMap
 const getCurrentCity = () => {
 
@@ -46,6 +47,6 @@ const getCurrentCity = () => {
 
 
 
-export {getCurrentCity,API,BASE_URL}
+export {getCurrentCity,API,BASE_URL,getCity,setCity}
 // 星号代表导出全部
 export * from './token'

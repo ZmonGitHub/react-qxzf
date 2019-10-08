@@ -12,6 +12,23 @@ import Map from './pages/Map'
 import Details from './pages/details'
 import Profile from './pages/Profile'
 import Login from './pages/Login'
+import Rent from './pages/Rent'
+import RentAdd from './pages/Rent/Add'
+import RentSearch from './pages/Rent/Search'
+// 导入AuthRoute鉴权路由
+import AuthRoute from './components/AuthRoute'
+
+// 模拟一个组件测试鉴权路由
+// const RentAdd = props => {
+//     return (
+//         <h1>
+//           这是出租房屋页面，需要登录后才能访问{' '}
+//           <button onClick={() => props.history.go(-1)}>返回</button>
+//         </h1>
+//       )
+//   }
+
+
 // 没有状态的更新用无状态函数组件
 const App = () => {
     return (
@@ -25,6 +42,11 @@ const App = () => {
         <Route path="/details/:id" component={Details}></Route>
         <Route path="/profile" component={Profile} ></Route>
         <Route path="/login" component={Login} ></Route>
+        {/* 配置需要登录才能访问的鉴权路由 */}
+        {/* /rent需要精准匹配，不然每次都显示 */}
+        <AuthRoute exact path="/rent" component={Rent} ></AuthRoute>
+        <AuthRoute path="/rent/add" component={RentAdd} ></AuthRoute>
+        <AuthRoute path="/rent/search" component={RentSearch} ></AuthRoute>
         </div>
         </Router>
     )

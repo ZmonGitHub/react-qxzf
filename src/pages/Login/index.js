@@ -91,7 +91,15 @@ Login =  withFormik({
     const { body,status,description } = res.data
     if(status === 200){
     localStorage.setItem('hkzf_token',body.token)
-    props.history.go(-1)
+    console.log(props)
+    const { state } = props.location
+    if( !state ){
+      // 如果state没有值,就返回上一级就可以
+      props.history.go(-1)
+    }else{
+      // 如果有state证明是从鉴权路由过来的，需要再回到鉴权旅游的页面,如果返回上一级就又回到了login，所以要使用replace替换login。push会再历史记录数组中再往后添加一个记录，二replace是替换掉login
+      props.history.replace(state.pathname)
+    }
     }else{
       Toast.info(description,2)
     }

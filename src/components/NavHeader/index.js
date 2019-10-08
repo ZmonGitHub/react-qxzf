@@ -21,7 +21,7 @@ function NavHeader(props) {
 }
 
 NavHeader.propTypes = {
-    children: PropTypes.string.isRequired,
+    children: PropTypes.string,
     // children属性接收的值必须是字符串必填
     className:PropTypes.string
     // className属性的值必须是字符串，不是必须填写

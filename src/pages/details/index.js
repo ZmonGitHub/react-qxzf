@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 
-import { Carousel, Flex } from 'antd-mobile'
+import { Carousel, Flex,Modal,Toast } from 'antd-mobile'
 
 import NavHeader from '../../components/NavHeader'
 import HouseItem from '../../components/HouseItem'
 import HousePackage from '../../components/HousePackage'
 
-import { BASE_URL,API } from '../../utils'
+import { BASE_URL,API,isAuth } from '../../utils'
 
 import styles from './index.module.scss'
 
@@ -55,9 +55,10 @@ const labelStyle = {
   fontSize: 12,
   userSelect: 'none'
 }
-
+// const isFavorite = false
 export default class HouseDetail extends Component {
   state = {
+    isFavorite:false,
     imgHeight:252,
     isLoading: false,
     body:{},
@@ -96,24 +97,105 @@ export default class HouseDetail extends Component {
     }
   }
 
-  async componentDidMount() {
-    // console.log(this.props.match.params)
-    const {id} = this.props.match.params
-    const res = await API.get(`/houses/${id}`)
-    console.log(res)
-    const { data:{body} } = res
+  componentDidMount() {
+  const {id} = this.props.match.params
+  this.id = id
+  this.renderHouses()
+  this.checkFavorite()
+  }
+  // 进入页面就执行，判断是否登录，来执行收藏操作
+  async checkFavorite() {
+  if(!isAuth()){
+    // 没有登录去登录
+    return
+  }
+  // 登录就去发送ajax,查看收藏状态
+  const res = await API.get(`/user/favorites/${this.id}`)
+  // console.log(res)
+  const { body,status } = res.data
+  if(status === 200){
     this.setState({
-      houseInfo:{
-        slides:body.houseImg,
-        price:body.price
-      },
-      body
+      isFavorite: body.isFavorite
     })
-    console.log(this.state.slides)
-    this.renderMap(body.community, {
-      latitude: body.coord.latitude,
-      longitude: body.coord.longitude
-    })
+  }
+  }
+  // 渲染详情页
+  async renderHouses(){
+   // console.log(this.props.match.params)
+
+   // 开启loading
+   this.setState({
+    isLoading: true
+  })
+   const res = await API.get(`/houses/${this.id}`)
+   // console.log(res)
+   const { data:{body} } = res
+   this.body = body
+   this.setState({
+     houseInfo:{
+       slides:body.houseImg,
+       price:body.price
+     },
+     body,
+     isLoading:false
+   })
+  //  console.log(this.state.slides)
+   this.renderMap(body.community, {
+     latitude: body.coord.latitude,
+     longitude: body.coord.longitude
+   })
+  }
+  showModal () {
+    Modal.alert('提示','登录后才能收藏房源，是否去登录?',[
+      {text:'取消'},
+      {text:'去登录',onPress: () => {
+        // 点击后去Login页面,因为跳转登录后，还需要存储当前页的地址，登录后返回
+        this.props.history.replace('/login',this.props.location)
+      }}
+    ])
+  }
+  // 收藏点击事件
+  handelFavorite = async() =>{
+    // 先判断有没有登录
+    if(!isAuth()){
+      this.setState({
+        isFavorite: false
+      })
+      //1 如果没有登录，就提示用户： 需要登录
+      return this.showModal()
+    }
+    // 如果登录了，获取当前收藏状态
+    const { isFavorite } = this.state
+      // 进行判断
+      if(isFavorite){
+        const res = await API.delete(`/user/favorites/${this.id}`)
+        // console.log(res)
+        //  2.1 如果已收藏，就ajax删除收藏
+        this.setState({
+          isFavorite:false
+        })
+        if(res.data.status === 200 ){
+          // 提示已经取消，显示1.5秒
+          Toast.info('已取消收藏',1.5)
+        }else{
+          // 就是返回400+的，就是token实效等特殊情况，让用户登录
+          this.showModal()
+        }
+      }else{
+        //  没有ajax收藏就收藏
+        const res = await API.post(`/user/favorites/${this.id}`)
+        if(res.data.status === 200){
+          // 提示收藏成，更新state状态
+          Toast.info('收藏成功',1.5)
+          this.setState({
+            isFavorite:true
+          })
+        }else{
+          // 超时就重新登
+          this.showModal()
+        }
+      }
+
   }
 
   // 渲染轮播图结构
@@ -122,7 +204,7 @@ export default class HouseDetail extends Component {
       houseInfo: { slides }
     } = this.state
     // sllides是空数组
-    console.log(slides)
+    // console.log(slides)
 
     return slides.map(item => (
       <a key={item}  href="http://itcast.cn" style={{ display: 'inline-block', width: '100%', height:252}} >
@@ -163,7 +245,7 @@ export default class HouseDetail extends Component {
   }
 
   render() {
-    const { isLoading,body } = this.state
+    const { isLoading,body,isFavorite } = this.state
     return (
       <div className={styles.root}>
         {/* 顶部导航栏 */}
@@ -307,13 +389,25 @@ export default class HouseDetail extends Component {
 
         {/* 底部收藏按钮 */}
         <Flex className={styles.fixedBottom}>
-          <Flex.Item>
+          <Flex.Item onClick={this.handelFavorite} >
+            { isFavorite ? (<>
             <img
-              src={BASE_URL + '/img/unstar.png'}
+              src={BASE_URL + '/img/star.png'}
               className={styles.favoriteImg}
               alt="收藏"
             />
-            <span className={styles.favorite}>收藏</span>
+            <span className={styles.favorite}>已收藏</span>
+            </>) : 
+            (<>
+              <img
+                src={BASE_URL + '/img/unstar.png'}
+                className={styles.favoriteImg}
+                alt="收藏"
+              />
+              <span className={styles.favorite}>收藏</span>
+              </>)
+          }
+            
           </Flex.Item>
           <Flex.Item>在线咨询</Flex.Item>
           <Flex.Item>
