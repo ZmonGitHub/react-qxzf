@@ -47,3 +47,5 @@ const getCurrentCity = () => {
 
 
 export {getCurrentCity,API,BASE_URL}
+// 星号代表导出全部
+export * from './token'

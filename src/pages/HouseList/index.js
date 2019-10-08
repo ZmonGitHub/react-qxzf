@@ -152,7 +152,7 @@ export default class HouseList extends Component  {
                     scrollTop={scrollTop}
                     width={width}
                     rowCount={count}
-                    rowHeight={120}
+                    rowHeight={130}
                     rowRenderer={this.rowRenderer}
                     />
                 )}

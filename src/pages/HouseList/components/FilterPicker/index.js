@@ -11,7 +11,7 @@ export default class FilterPicker extends Component {
     value:this.props.defaultValue
   }
   handleChange=(value)=>{
-    console.log(value)
+    // console.log(value)
     this.setState({
       value
     })

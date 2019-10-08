@@ -10,6 +10,8 @@ import Home from './pages/Home'
 import CityList from './pages/CityList'
 import Map from './pages/Map'
 import Details from './pages/details'
+import Profile from './pages/Profile'
+import Login from './pages/Login'
 // 没有状态的更新用无状态函数组件
 const App = () => {
     return (
@@ -21,6 +23,8 @@ const App = () => {
         <Route path="/map" component={Map}></Route>
         <Route path="/citylist" component={CityList}></Route>
         <Route path="/details/:id" component={Details}></Route>
+        <Route path="/profile" component={Profile} ></Route>
+        <Route path="/login" component={Login} ></Route>
         </div>
         </Router>
     )

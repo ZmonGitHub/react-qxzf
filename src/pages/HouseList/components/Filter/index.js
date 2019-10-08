@@ -258,13 +258,13 @@ export default class Filter extends Component {
     const data = {roomType, oriented, floor, characteristic}
     const defaultValue = selectedValues.more
     // 可以拿到more默认的选中值
-    return <FilterMore data={data} defaultValue={defaultValue} onOk={this.onOK} onCancel={this.onCancel} />
+    return (<FilterMore data={data} defaultValue={defaultValue} onOk={this.onOK} onCancel={this.onCancel} />)
   }
   // 渲染遮罩层
   renderMask(){
     const {openType  } = this.state
     // 条件成立隐藏，隐藏就是0
-    const isHideMask = openType !== 'area' && openType !== 'mode' && openType !== 'price' && openType !=='more'
+    const isHideMask = openType !== 'area' && openType !== 'mode' && openType !== 'price' 
     
     return ( <Spring to={ {opacity:isHideMask ? 0 : 1} }>
      {props =>{ 
@@ -288,7 +288,7 @@ export default class Filter extends Component {
           
           {this.renderFilterPicker()}
           {/* 最后一个菜单对应的内容： */}
-          
+
           {this.renderFilterMore()}
         </div>
       </div>
