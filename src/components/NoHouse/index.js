@@ -1,6 +1,6 @@
 import React from 'react'
 
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 
 import { BASE_URL } from '../../utils/url'
 import styles from './index.module.css'
@@ -16,8 +16,8 @@ const NoHouse = ({ children }) => (
   </div>
 )
 
-NoHouse.propTypes = {
-  children: PropTypes.string.isRequired
-}
+// NoHouse.propTypes = {
+//   children: PropTypes.isRequired
+// }
 
 export default NoHouse

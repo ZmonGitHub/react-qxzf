@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{lazy} from 'react'
 // 导入路由
 import {Route} from 'react-router-dom'
 // 导入mobileUI
@@ -6,10 +6,12 @@ import { TabBar } from 'antd-mobile'
 // 引入样式
 import './index.css'
 // 引入的四个子组件
-import News from '../News'
-import Profile from '../Profile'
+// 除了首页不用懒加载别的也需要懒加载
 import Index from '../Index'
-import HouseList from '../HouseList'
+
+const News = lazy(()=>import ('../News'))
+const Profile = lazy(()=>import ('../Profile'))
+const HouseList = lazy(()=>import ('../HouseList'))
 
 // 把数据抽出来进行渲染
 const barList = [

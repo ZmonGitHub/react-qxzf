@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { API, BASE_URL } from '../../utils'
+import { API } from '../../utils'
 
 import NavHeader from '../../components/NavHeader'
 import HouseItem from '../../components/HouseItem'
@@ -42,11 +42,12 @@ export default class Rent extends Component {
     const { history } = this.props
 
     return list.map(item => {
+      console.log(item)
       return (
         <HouseItem
           key={item.houseCode}
-          onClick={() => history.push(`/detail/${item.houseCode}`)}
-          src={BASE_URL + item.houseImg}
+          onClick={() => history.push(`/details/${item.houseCode}`)}
+          houseImg={item.houseImg}
           title={item.title}
           desc={item.desc}
           tags={item.tags}

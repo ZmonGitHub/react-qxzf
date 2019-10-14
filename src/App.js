@@ -1,22 +1,23 @@
 
 // 职责配置路由
-import React from 'react'
+import React, { Suspense, lazy } from 'react'
 import { BrowserRouter as Router , Route ,Redirect } from 'react-router-dom'
 
 // 导入页面
 // './pages/Home/index.js' .js 后缀 以及 index 都可以省略。
 // 因为在导入模块时，会自动查找 index.js
 import Home from './pages/Home'
-import CityList from './pages/CityList'
-import Map from './pages/Map'
-import Details from './pages/details'
-import Profile from './pages/Profile'
-import Login from './pages/Login'
-import Rent from './pages/Rent'
-import RentAdd from './pages/Rent/Add'
-import RentSearch from './pages/Rent/Search'
+// 首屏不要懒加载，因为懒加载会增加http请求次数，造成不必要的浪费
+const CityList = lazy(()=>import ('./pages/CityList'))
+const Map = lazy(()=>import ('./pages/Map'))
+const Details = lazy(()=>import ('./pages/details'))
+const Profile = lazy(()=>import ('./pages/Profile'))
+const Login = lazy(()=>import ('./pages/Login'))
+const Rent = lazy(()=>import ('./pages/Rent'))
+const RentAdd = lazy(()=>import ('./pages/Rent/Add'))
+const RentSearch = lazy(()=>import ('./pages/Rent/Search'))
 // 导入AuthRoute鉴权路由
-import AuthRoute from './components/AuthRoute'
+const AuthRoute =lazy(()=>import ('./components/AuthRoute'))
 
 // 模拟一个组件测试鉴权路由
 // const RentAdd = props => {
@@ -33,6 +34,7 @@ import AuthRoute from './components/AuthRoute'
 const App = () => {
     return (
         <Router>
+        <Suspense fallback={<div>Loading...</div>}>
         <div className="App">
             {/* 需要一个重定向,注意一定要加上exact，不然所有的/都会跑到home */}
         <Route exact path="/" render={ () => <Redirect to="/home"></Redirect> }></Route>
@@ -48,6 +50,7 @@ const App = () => {
         <AuthRoute path="/rent/add" component={RentAdd} ></AuthRoute>
         <AuthRoute path="/rent/search" component={RentSearch} ></AuthRoute>
         </div>
+        </Suspense>
         </Router>
     )
 } 

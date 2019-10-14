@@ -43,7 +43,7 @@ function HouseItem({ houseImg, title, desc, tags, price, onClick, style }) {
 
 // 属性校验
 HouseItem.propTypes = {
-  houseImg: PropTypes.string.isRequired,
+  houseImg: PropTypes.string,
   title: PropTypes.string.isRequired,
   desc: PropTypes.string.isRequired,
   tags: PropTypes.array.isRequired,

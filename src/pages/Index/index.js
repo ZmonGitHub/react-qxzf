@@ -80,6 +80,7 @@ export default class Index extends Component {
     // 发送ajax
     async getAutoChartList() {
         const res = await axios.get('http://localhost:8080/home/swiper')
+        // const res = await axios.get('/api/home/swiper')
         // console.log(res)
         this.setState({
             data: res.data.body,

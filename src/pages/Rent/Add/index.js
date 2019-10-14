@@ -7,12 +7,13 @@ import {
   Picker,
   ImagePicker,
   TextareaItem,
-  Modal
+  Modal,
+  Toast
 } from 'antd-mobile'
 
 import NavHeader from '../../../components/NavHeader'
 import HousePackge from '../../../components/HousePackage'
-
+import {API} from '../../../utils'
 import styles from './index.module.css'
 
 const alert = Modal.alert
@@ -105,7 +106,75 @@ export default class RentAdd extends Component {
       }
     ])
   }
+  handleHousePackage = (selectedValues) => {
+    // console.log(selectedValues)
+    //拿到了点击的获取到的配套name
+    this.setState({
+      supporting:selectedValues.join('|')
+    })
+    // console.log(this.state.supporting)
+  }
+  handleImg = (files, type, index) => {
+    // console.log(files, type, index)
+    this.setState({
+      tempSlides:files
+    })
+  }
 
+  addHouse = async () => {
+    // 1 先实现图片上传
+    const {tempSlides} = this.state
+    if( tempSlides.length < 1 ) return Toast.info('请上传房屋图片',1)
+    const form = new FormData()
+    tempSlides.forEach(item => {
+      form.append('file',item.file)
+    })
+    // 调用图片上传接口
+    const res = await API.post('/houses/image',form,{
+      // 因为现在上传的数据为 复杂的数据（图片文件），不再是简单的字符串数据
+      headers:{
+        'Content-Type':'multipart/form-data'
+      }
+    })
+    // console.log(res)
+    const {body} = res.data
+    const houseImg = body.join('|')
+    // 房源发布
+    const {
+      price,
+      size,
+      roomType,
+      floor,
+      oriented,
+      title,
+      supporting,
+      description,
+      community
+    } = this.state
+    const getAddHouse = await API.post('/user/houses',{
+      price,
+      size,
+      roomType,
+      floor,
+      oriented,
+      title,
+      supporting,
+      description,
+      community:community.id,
+      houseImg
+    })
+    console.log(getAddHouse)
+    if(getAddHouse.data.status === 200){
+      Toast.info('发布成功',1,()=>{
+        this.props.history.push('/rent')
+      })
+    }else if(getAddHouse.data.status === 400){
+      // 登录超时，跳转重新登录
+      this.props.history.replace('/login',this.props.location)
+    }else{
+      Toast.info('服务器偷懒了，请稍后再试~')
+    }
+  }
   render() {
     const Item = List.Item
     const { history } = this.props
@@ -118,7 +187,7 @@ export default class RentAdd extends Component {
       description,
       tempSlides,
       title,
-      size
+      size,
     } = this.state
 
     return (
@@ -180,6 +249,7 @@ export default class RentAdd extends Component {
           <ImagePicker
             files={tempSlides}
             multiple={true}
+            onChange={this.handleImg}
             className={styles.imgpicker}
           />
         </List>
@@ -189,7 +259,7 @@ export default class RentAdd extends Component {
           renderHeader={() => '房屋配置'}
           data-role="rent-list"
         >
-          <HousePackge select />
+          <HousePackge select onSelect={ this.handleHousePackage }  />
         </List>
 
         <List
